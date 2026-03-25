@@ -16,16 +16,17 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.println("======================================");
-        System.out.println("UC8 - Filter Passenger Bogies Using Streams");
+        System.out.println("UC9 - Group Bogies by Type");
         System.out.println("======================================\n");
 
-        // Create list (same as UC7)
+        // Create list
         List<Bogie> bogies = new ArrayList<>();
 
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 56));
         bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("General", 90));
+        bogies.add(new Bogie("Sleeper", 70));
+        bogies.add(new Bogie("AC Chair", 60));
 
         System.out.println("All Bogies:");
 
@@ -33,17 +34,23 @@ public class Main {
             System.out.println(b.name + " -> " + b.capacity);
         }
 
-        // Filter using Stream (capacity > 60)
-        List<Bogie> filtered = bogies.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
+        // Grouping using Streams
+        Map<String, List<Bogie>> grouped = bogies.stream()
+                .collect(Collectors.groupingBy(b -> b.name));
 
-        System.out.println("\nFiltered Bogies (Capacity > 60):");
+        System.out.println("\nGrouped Bogies:\n");
 
-        for (Bogie b : filtered) {
-            System.out.println(b.name + " -> " + b.capacity);
+        for (Map.Entry<String, List<Bogie>> entry : grouped.entrySet()) {
+
+            System.out.println("Bogie Type: " + entry.getKey());
+
+            for (Bogie b : entry.getValue()) {
+                System.out.println("  Capacity -> " + b.capacity);
+            }
+
+            System.out.println();
         }
 
-        System.out.println("\nUC8 filtering completed...");
+        System.out.println("UC9 grouping completed...");
     }
 }
