@@ -1,24 +1,38 @@
-import java.util.Arrays;
-
 public class Main {
+
+    // Linear Search method
+    public static boolean linearSearch(String[] bogies, String key) {
+        for (String b : bogies) {
+            if (b.equals(key)) {
+                return true; // found
+            }
+        }
+        return false; // not found
+    }
 
     public static void main(String[] args) {
 
         System.out.println("=======================================");
-        System.out.println("UC17 - Sort Bogie Names Using Arrays.sort()");
+        System.out.println("UC18 - Linear Search for Bogie ID");
         System.out.println("=======================================\n");
 
-        String[] bogieNames = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
+        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        System.out.println("Original Bogie Names:");
-        System.out.println(Arrays.toString(bogieNames));
+        System.out.println("Available Bogie IDs:");
+        for (String id : bogieIds) {
+            System.out.println(id);
+        }
 
-        // Sorting using built-in method
-        Arrays.sort(bogieNames);
+        String searchKey = "BG309";
 
-        System.out.println("\nSorted Bogie Names (Alphabetical):");
-        System.out.println(Arrays.toString(bogieNames));
+        boolean found = linearSearch(bogieIds, searchKey);
 
-        System.out.println("\nUC17 sorting completed...");
+        if (found) {
+            System.out.println("\nBogie " + searchKey + " found in train consist.");
+        } else {
+            System.out.println("\nBogie " + searchKey + " NOT found.");
+        }
+
+        System.out.println("\nUC18 search completed...");
     }
 }
