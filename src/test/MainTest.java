@@ -4,46 +4,42 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MainTest {
 
     @Test
-    void testCargo_SafeAssignment() {
-        Main.GoodsBogie b = new Main.GoodsBogie("Cylindrical");
-        b.assignCargo("Petroleum");
+    void testSort_BasicSorting() {
+        int[] arr = {72, 56, 24, 70, 60};
+        Main.bubbleSort(arr);
 
-        assertEquals("Petroleum", b.cargo);
+        assertArrayEquals(new int[]{24, 56, 60, 70, 72}, arr);
     }
 
     @Test
-    void testCargo_UnsafeAssignmentHandled() {
-        Main.GoodsBogie b = new Main.GoodsBogie("Rectangular");
-        b.assignCargo("Petroleum");
+    void testSort_AlreadySortedArray() {
+        int[] arr = {24, 56, 60, 70, 72};
+        Main.bubbleSort(arr);
 
-        assertNull(b.cargo); // should not assign
+        assertArrayEquals(new int[]{24, 56, 60, 70, 72}, arr);
     }
 
     @Test
-    void testCargo_CargoNotAssignedAfterFailure() {
-        Main.GoodsBogie b = new Main.GoodsBogie("Rectangular");
-        b.assignCargo("Petroleum");
+    void testSort_DuplicateValues() {
+        int[] arr = {72, 56, 56, 24};
+        Main.bubbleSort(arr);
 
-        assertNull(b.cargo);
+        assertArrayEquals(new int[]{24, 56, 56, 72}, arr);
     }
 
     @Test
-    void testCargo_ProgramContinuesAfterException() {
-        Main.GoodsBogie b1 = new Main.GoodsBogie("Rectangular");
-        b1.assignCargo("Petroleum");
+    void testSort_SingleElementArray() {
+        int[] arr = {50};
+        Main.bubbleSort(arr);
 
-        Main.GoodsBogie b2 = new Main.GoodsBogie("Cylindrical");
-        b2.assignCargo("Petroleum");
-
-        assertEquals("Petroleum", b2.cargo);
+        assertArrayEquals(new int[]{50}, arr);
     }
 
     @Test
-    void testCargo_FinallyBlockExecution() {
-        Main.GoodsBogie b = new Main.GoodsBogie("Rectangular");
-        b.assignCargo("Petroleum");
+    void testSort_AllEqualValues() {
+        int[] arr = {40, 40, 40};
+        Main.bubbleSort(arr);
 
-        // If program reaches here → finally executed
-        assertTrue(true);
+        assertArrayEquals(new int[]{40, 40, 40}, arr);
     }
 }
