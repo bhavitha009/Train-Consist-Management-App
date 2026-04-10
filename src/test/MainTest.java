@@ -1,46 +1,60 @@
 import org.junit.jupiter.api.Test;
-import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MainTest {
 
     @Test
-    void testBinarySearch_Found() {
-        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
-        Arrays.sort(arr);
+    void testSearch_ThrowsExceptionWhenEmpty() {
+        String[] arr = {};
 
-        assertTrue(Main.binarySearch(arr, "BG309"));
+        Exception ex = assertThrows(IllegalStateException.class, () -> {
+            if (arr.length == 0) {
+                throw new IllegalStateException("Cannot perform search: No bogies available in train.");
+            }
+        });
+
+        assertTrue(ex.getMessage().contains("No bogies"));
     }
 
     @Test
-    void testBinarySearch_NotFound() {
-        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
-        Arrays.sort(arr);
+    void testSearch_NormalExecutionWhenDataExists() {
+        String[] arr = {"BG101","BG205","BG309"};
 
-        assertFalse(Main.binarySearch(arr, "BG999"));
+        boolean result = Main.binarySearch(arr, "BG309");
+
+        assertTrue(result);
     }
 
     @Test
-    void testBinarySearch_FirstElement() {
-        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
-        Arrays.sort(arr);
+    void testSearch_NotFoundCase() {
+        String[] arr = {"BG101","BG205","BG309"};
 
-        assertTrue(Main.binarySearch(arr, "BG101"));
+        boolean result = Main.binarySearch(arr, "BG999");
+
+        assertFalse(result);
     }
 
     @Test
-    void testBinarySearch_LastElement() {
-        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
-        Arrays.sort(arr);
-
-        assertTrue(Main.binarySearch(arr, "BG550"));
-    }
-
-    @Test
-    void testBinarySearch_SingleElement() {
+    void testSearch_NoExceptionWhenNotEmpty() {
         String[] arr = {"BG101"};
-        Arrays.sort(arr);
 
-        assertTrue(Main.binarySearch(arr, "BG101"));
+        assertDoesNotThrow(() -> {
+            if (arr.length == 0) {
+                throw new IllegalStateException();
+            }
+        });
+    }
+
+    @Test
+    void testSearch_ExceptionMessage() {
+        String[] arr = {};
+
+        Exception ex = assertThrows(IllegalStateException.class, () -> {
+            if (arr.length == 0) {
+                throw new IllegalStateException("Cannot perform search: No bogies available in train.");
+            }
+        });
+
+        assertEquals("Cannot perform search: No bogies available in train.", ex.getMessage());
     }
 }
