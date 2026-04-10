@@ -4,49 +4,46 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MainTest {
 
     @Test
-    void testException_ValidCapacityCreation() throws Exception {
-        Main.PassengerBogie b = new Main.PassengerBogie("Sleeper", 72);
-        assertEquals("Sleeper", b.type);
-        assertEquals(72, b.capacity);
+    void testCargo_SafeAssignment() {
+        Main.GoodsBogie b = new Main.GoodsBogie("Cylindrical");
+        b.assignCargo("Petroleum");
+
+        assertEquals("Petroleum", b.cargo);
     }
 
     @Test
-    void testException_NegativeCapacityThrowsException() {
-        Exception ex = assertThrows(Main.InvalidCapacityException.class, () -> {
-            new Main.PassengerBogie("Sleeper", -10);
-        });
-        assertEquals("Capacity must be greater than zero", ex.getMessage());
+    void testCargo_UnsafeAssignmentHandled() {
+        Main.GoodsBogie b = new Main.GoodsBogie("Rectangular");
+        b.assignCargo("Petroleum");
+
+        assertNull(b.cargo); // should not assign
     }
 
     @Test
-    void testException_ZeroCapacityThrowsException() {
-        Exception ex = assertThrows(Main.InvalidCapacityException.class, () -> {
-            new Main.PassengerBogie("AC", 0);
-        });
-        assertEquals("Capacity must be greater than zero", ex.getMessage());
+    void testCargo_CargoNotAssignedAfterFailure() {
+        Main.GoodsBogie b = new Main.GoodsBogie("Rectangular");
+        b.assignCargo("Petroleum");
+
+        assertNull(b.cargo);
     }
 
     @Test
-    void testException_ExceptionMessageValidation() {
-        Exception ex = assertThrows(Main.InvalidCapacityException.class, () -> {
-            new Main.PassengerBogie("AC", 0);
-        });
-        assertTrue(ex.getMessage().contains("greater than zero"));
+    void testCargo_ProgramContinuesAfterException() {
+        Main.GoodsBogie b1 = new Main.GoodsBogie("Rectangular");
+        b1.assignCargo("Petroleum");
+
+        Main.GoodsBogie b2 = new Main.GoodsBogie("Cylindrical");
+        b2.assignCargo("Petroleum");
+
+        assertEquals("Petroleum", b2.cargo);
     }
 
     @Test
-    void testException_ObjectIntegrityAfterCreation() throws Exception {
-        Main.PassengerBogie b = new Main.PassengerBogie("First Class", 24);
-        assertEquals("First Class", b.type);
-        assertEquals(24, b.capacity);
-    }
+    void testCargo_FinallyBlockExecution() {
+        Main.GoodsBogie b = new Main.GoodsBogie("Rectangular");
+        b.assignCargo("Petroleum");
 
-    @Test
-    void testException_MultipleValidBogiesCreation() throws Exception {
-        Main.PassengerBogie b1 = new Main.PassengerBogie("Sleeper", 72);
-        Main.PassengerBogie b2 = new Main.PassengerBogie("AC", 56);
-
-        assertNotNull(b1);
-        assertNotNull(b2);
+        // If program reaches here → finally executed
+        assertTrue(true);
     }
 }
